@@ -13,9 +13,6 @@ import ctypes
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 
-# check if choco is installed
-
-# UI Things
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -455,8 +452,6 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-        # Functions for buttons and menus
-
         self.checkBox_23.setEnabled(False)
         
         # Function to check what checkbox are checked and add corresponding package names to packages variable
@@ -775,6 +770,7 @@ class Ui_MainWindow(object):
         def installButton():
             packageinstall()
 
+        # Elevate privileges to install chocolatey and sudo
         def chocofix():
             def is_admin():
                 try:
@@ -797,6 +793,7 @@ class Ui_MainWindow(object):
             else:
                 ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
         
+        # Check if chocolatey is installed and call the install funcition
         def firstSetup():
             if file_exists('C:\ProgramData\Chocolatey\choco.exe'):
                 time.sleep(0)
@@ -827,7 +824,6 @@ I Know the progressbar is not working... it's just there for a future code.
             """)
             msgboxvar = msg.exec_()
         
-        # Before trigger buttons let's run the first setup in case chocolatey is not found
         firstSetup()
         
         # Triggers for funcions
