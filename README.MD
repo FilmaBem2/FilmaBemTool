@@ -7,6 +7,18 @@ if it’s the first run or chocolatey is not installed this tool will relaunch a
 # Top Menu
 In the top menu you have the ‘Software’ tab with 2 options to troubleshoot and an option to upgrade all software installed by this tool or directlly by chocolatey. In the same menu you have the ‘Help’ tab with 2 options. One of them is some information about the tool and the other option is to donate to my paypal.
 
+# Why did i made this tool?
+I made this tool because i could not find a tool to install the software i want and without malware included. So i decided to make my own install tool so i can install the software i want with less work.
+
+# Why in python?
+Because python is easy.
+
+# Why using sudo?
+Because i think it's better to call a process with sudo instead of running the main process with elevated privilegs.
+
+# Why it asks for administrator anywhay?
+It only asks for administrator if chocolatey is not installed and it's just to install ir and the install sudo. If you want you can restart the tool after it installs this 2 softwares and it will not ask for admin anymore. The only administrator prompts you will see will be subprocess to install the software you selected. All Subprocess will run in a command line so you can see whats happening during the installation.
+
 # Used tools
 I used this tools to help to make the code easier and make sure the software will act as it should
 
