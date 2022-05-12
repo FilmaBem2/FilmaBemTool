@@ -1,4 +1,6 @@
 from cgi import test
+from encodings import utf_8
+from re import sub
 import tkinter
 from tkinter import messagebox
 from appJar import gui
@@ -420,12 +422,12 @@ class Ui_MainWindow(object):
         self.pushButton_4.setGeometry(QtCore.QRect(670, 500, 381, 41))
         self.pushButton_4.setObjectName("pushButton_4")
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
-        self.progressBar.setEnabled(False)
+        self.progressBar.setEnabled(True)
         self.progressBar.setGeometry(QtCore.QRect(670, 570, 381, 21))
         self.progressBar.setProperty("value", 0)
         self.progressBar.setObjectName("progressBar")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setEnabled(False)
+        self.label_2.setEnabled(True)
         self.label_2.setGeometry(QtCore.QRect(670, 550, 61, 16))
         self.label_2.setObjectName("label_2")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -468,7 +470,16 @@ class Ui_MainWindow(object):
         def check():
             # Browsers
             if self.Waterfox.isChecked():
-                subprocess.call('sudo choco install waterfox --confirm')
+                workingfeature()
+                self.label_2.setText("Progress: Waterfox")
+                self.label_2.adjustSize()
+                self.progressBar.setProperty("value", 0)
+                install = subprocess.Popen("sudo choco install waterfox --confirm", shell=True, stdout=subprocess.PIPE)
+                install.wait()
+                self.progressBar.setProperty("value", 100)
+                self.label_2.setText("Progress:")
+                self.label_2.adjustSize()
+                workdone()
             elif self.checkBox_5.isChecked():
                 subprocess.call('sudo choco install microsoft-edge --confirm')
             elif self.checkBox_4.isChecked():
@@ -860,7 +871,7 @@ I Know the progressbar is not working... it's just there for a future code.
         self.checkBox_8.setText(_translate("MainWindow", "Vivaldi"))
         self.checkBox_3.setText(_translate("MainWindow", "Librewolf"))
         self.checkBox.setText(_translate("MainWindow", "Pale Moon"))
-        self.groupBox_2.setTitle(_translate("MainWindow", "Games"))
+        self.groupBox_2.setTitle(_translate("MainWindow", ""))
         self.checkBox_13.setText(_translate("MainWindow", "Steam"))
         self.checkBox_12.setText(_translate("MainWindow", "Origin"))
         self.checkBox_11.setText(_translate("MainWindow", "UPlay"))

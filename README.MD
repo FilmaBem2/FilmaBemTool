@@ -22,11 +22,11 @@ It only asks for administrator if chocolatey is not installed and it's just to i
 # Used tools
 I used this tools to help to make the code easier and make sure the software will act as it should
 
-# PyQt5
+## PyQt5
 PyQt is a Python binding of the cross-platform GUI toolkit Qt, implemented as a Python plug-in. PyQt is free software developed by the British firm Riverbank Computing
 
-# Chocolatey
+## Chocolatey
 Chocolatey is a software management solution that allows you to manage 100% of your software, anywhere you have Windows, with any endpoint management tool. No other solution (including newly announced solutions) reach this level of management - most only can manage to software in Programs and Features.
 
-# Sudo
+## Sudo
 sudo is a program that enables users to run programs with the elevated privileges of another user.
