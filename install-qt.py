@@ -12,15 +12,25 @@ import time
 import ctypes
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
+from qt_material import apply_stylesheet, list_themes
+import darkdetect
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1080, 900)
+        MainWindow.resize(1080, 930)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(".\\imgs/icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
+
+        # Detect if Windows in on dark mode and apply ui dark theme
+        # if windows is not in dark mode the light theme will be applied
+        if darkdetect.isDark():
+            apply_stylesheet(app, theme='dark_blue.xml')
+        else:
+            apply_stylesheet(app, theme='light_blue.xml')
+
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -839,7 +849,7 @@ I Know the progressbar is not working... it's just there for a future code.
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Filma Bem Tool"))
         self.label.setText(_translate("MainWindow", "Welcome to Filma Bem Tool. Select the programs you want to install and then click on the Install button"))
-        self.groupBox.setTitle(_translate("MainWindow", "Browsers"))
+        self.groupBox.setTitle(_translate("MainWindow", ""))
         self.Waterfox.setText(_translate("MainWindow", "Waterfox"))
         self.checkBox_5.setText(_translate("MainWindow", "Microsoft Edge"))
         self.checkBox_4.setText(_translate("MainWindow", "Google Chrome"))
@@ -861,18 +871,18 @@ I Know the progressbar is not working... it's just there for a future code.
         self.checkBox_17.setText(_translate("MainWindow", "Itch.io"))
         self.checkBox_18.setText(_translate("MainWindow", "Minecraft Launcher"))
         self.checkBox_19.setText(_translate("MainWindow", "GDLauncher"))
-        self.groupBox_3.setTitle(_translate("MainWindow", "Compression"))
+        self.groupBox_3.setTitle(_translate("MainWindow", ""))
         self.checkBox_20.setText(_translate("MainWindow", "Winrar"))
         self.checkBox_21.setText(_translate("MainWindow", "7-Zip"))
         self.checkBox_22.setText(_translate("MainWindow", "PeaZip"))
-        self.groupBox_4.setTitle(_translate("MainWindow", "Communications"))
+        self.groupBox_4.setTitle(_translate("MainWindow", ""))
         self.checkBox_23.setText(_translate("MainWindow", "Guilded"))
         self.checkBox_24.setText(_translate("MainWindow", "Discord"))
         self.checkBox_25.setText(_translate("MainWindow", "Better Discord"))
         self.checkBox_26.setText(_translate("MainWindow", "Skype"))
         self.checkBox_27.setText(_translate("MainWindow", "Teams"))
         self.checkBox_28.setText(_translate("MainWindow", "Zoom"))
-        self.groupBox_5.setTitle(_translate("MainWindow", "Security"))
+        self.groupBox_5.setTitle(_translate("MainWindow", ""))
         self.checkBox_29.setText(_translate("MainWindow", "Authy"))
         self.checkBox_30.setText(_translate("MainWindow", "BitWarden"))
         self.checkBox_31.setText(_translate("MainWindow", "ProtonVPN"))
@@ -883,10 +893,10 @@ I Know the progressbar is not working... it's just there for a future code.
         self.checkBox_36.setText(_translate("MainWindow", "VeraCrypt"))
         self.checkBox_37.setText(_translate("MainWindow", "RadminVPN"))
         self.checkBox_38.setText(_translate("MainWindow", "Hamachi"))
-        self.groupBox_6.setTitle(_translate("MainWindow", "Remote Control"))
+        self.groupBox_6.setTitle(_translate("MainWindow", ""))
         self.checkBox_40.setText(_translate("MainWindow", "Anydesk"))
         self.checkBox_39.setText(_translate("MainWindow", "Teamviewer"))
-        self.groupBox_7.setTitle(_translate("MainWindow", "Power User Tools"))
+        self.groupBox_7.setTitle(_translate("MainWindow", ""))
         self.checkBox_41.setText(_translate("MainWindow", "Powertoys"))
         self.checkBox_51.setText(_translate("MainWindow", "Sysinternals Suite"))
         self.checkBox_42.setText(_translate("MainWindow", "Putty"))
@@ -898,13 +908,13 @@ I Know the progressbar is not working... it's just there for a future code.
         self.checkBox_48.setText(_translate("MainWindow", "Aomei Partition Assistant"))
         self.checkBox_49.setText(_translate("MainWindow", "FileZilla"))
         self.checkBox_50.setText(_translate("MainWindow", "Git"))
-        self.groupBox_8.setTitle(_translate("MainWindow", "Office"))
+        self.groupBox_8.setTitle(_translate("MainWindow", ""))
         self.checkBox_52.setText(_translate("MainWindow", "WPS Office"))
         self.checkBox_53.setText(_translate("MainWindow", "LibreOffice"))
         self.checkBox_54.setText(_translate("MainWindow", "OnlyOffice"))
         self.checkBox_55.setText(_translate("MainWindow", "OpenOffice"))
         self.checkBox_56.setText(_translate("MainWindow", "Microsoft Office"))
-        self.groupBox_9.setTitle(_translate("MainWindow", "Other Tools"))
+        self.groupBox_9.setTitle(_translate("MainWindow", ""))
         self.checkBox_57.setText(_translate("MainWindow", "EarTrumpet"))
         self.checkBox_60.setText(_translate("MainWindow", "OBS Studio"))
         self.checkBox_59.setText(_translate("MainWindow", "VLC Media Player"))
