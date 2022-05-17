@@ -1,9 +1,7 @@
+#!/usr/bin/env python
 from cgi import test
 from encodings import utf_8
 from re import sub
-import tkinter
-from tkinter import messagebox
-from appJar import gui
 import doctest
 import os
 from os.path import exists as file_exists
@@ -16,7 +14,42 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from qt_material import apply_stylesheet, list_themes
 import darkdetect
+import configparser
 
+# Function to detect color from config file and apply the coprresponding color to light and dark theme
+
+def themeclr():
+    appdt = os.getenv('APPDATA')
+    configfolder = appdt + '/' + 'filmabem/'
+    themefile = configfolder + '/theme.ini'
+    config = configparser.ConfigParser()
+    config.read(themefile)
+    
+    if config['themes']['color'] == 'Blue':
+        if darkdetect.isDark():
+            apply_stylesheet(app, theme='dark_blue.xml')
+        else:
+            apply_stylesheet(app, theme='light_blue.xml')
+    elif config['themes']['color'] == 'Cyan':
+        if darkdetect.isDark():
+            apply_stylesheet(app, theme='dark_cyan.xml')
+        else:
+            apply_stylesheet(app, theme='light_cyan.xml')
+    elif config['themes']['color'] == 'Pink':
+        if darkdetect.isDark():
+            apply_stylesheet(app, theme='dark_pink.xml')
+        else:
+            apply_stylesheet(app, theme='light_pink.xml')
+    elif config['themes']['color'] == 'Red':
+        if darkdetect.isDark():
+            apply_stylesheet(app, theme='dark_red.xml')
+        else:
+            apply_stylesheet(app, theme='light_red.xml')
+    elif config['themes']['color'] == 'Yellow':
+        if darkdetect.isDark():
+            apply_stylesheet(app, theme='dark_yellow.xml')
+        else:
+            apply_stylesheet(app, theme='light_yellow.xml')
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -25,13 +58,9 @@ class Ui_MainWindow(object):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(".\\imgs/icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
-
-        # Detect if Windows in on dark mode and apply ui dark theme
-        # if windows is not in dark mode the light theme will be applied
-        if darkdetect.isDark():
-            apply_stylesheet(app, theme='dark_blue.xml')
-        else:
-            apply_stylesheet(app, theme='light_blue.xml')
+       
+        # Run the theming function to theme the app
+        themeclr()
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
