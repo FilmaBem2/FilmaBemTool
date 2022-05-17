@@ -15,10 +15,27 @@ from PyQt5.QtWidgets import QMessageBox
 from qt_material import apply_stylesheet, list_themes
 import darkdetect
 import configparser
+import requests
+
+# Function to download the basic config file
+
+def confdl():
+    appdt = os.getenv('APPDATA')
+    configfolder = appdt + '/' + 'filmabem/'
+    themefile = configfolder + '/theme.ini'
+    url = 'https://www.dropbox.com/s/tuh8fqidut5msf3/theme.ini?dl=1'
+
+    if file_exists(themefile):
+        time.sleep(0)
+    else:
+        r = requests.get(url)
+        with open(themefile, 'wb') as f:
+            f.write(r.content)
 
 # Function to detect color from config file and apply the coprresponding color to light and dark theme
 
 def themeclr():
+    confdl()
     appdt = os.getenv('APPDATA')
     configfolder = appdt + '/' + 'filmabem/'
     themefile = configfolder + '/theme.ini'
@@ -467,6 +484,8 @@ class Ui_MainWindow(object):
         self.menuHelp.setObjectName("menuHelp")
         self.menuHelp_2 = QtWidgets.QMenu(self.menubar)
         self.menuHelp_2.setObjectName("menuHelp_2")
+        self.menuTheme = QtWidgets.QMenu(self.menubar)
+        self.menuTheme.setObjectName("menuTheme")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -481,14 +500,30 @@ class Ui_MainWindow(object):
         self.actionInstall_Sudo.setObjectName("actionInstall_Sudo")
         self.actionDonate = QtWidgets.QAction(MainWindow)
         self.actionDonate.setObjectName("actionDonate")
+        self.blue = QtWidgets.QAction(MainWindow)
+        self.blue.setObjectName("Blue")
+        self.cyan = QtWidgets.QAction(MainWindow)
+        self.cyan.setObjectName("Cyan")
+        self.pink = QtWidgets.QAction(MainWindow)
+        self.pink.setObjectName("Pink")
+        self.red = QtWidgets.QAction(MainWindow)
+        self.red.setObjectName("Red")
+        self.yellow = QtWidgets.QAction(MainWindow)
+        self.yellow.setObjectName("Yellow")
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionFix_Chocolatey)
         self.menuHelp.addAction(self.actionInstall_Sudo)
         self.menuHelp_2.addAction(self.actionAbout_2)
         self.menuHelp_2.addAction(self.actionDonate)
         self.menubar.addAction(self.menuHelp.menuAction())
+        self.menubar.addAction(self.menuTheme.menuAction())
         self.menubar.addAction(self.menuHelp_2.menuAction())
         self.menuHelp_2.addAction(self.actionDonate)
+        self.menuTheme.addAction(self.blue)
+        self.menuTheme.addAction(self.cyan)
+        self.menuTheme.addAction(self.pink)
+        self.menuTheme.addAction(self.red)
+        self.menuTheme.addAction(self.yellow)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -1364,6 +1399,32 @@ I Know the progressbar is not really showing progress... i'll fix it in the futu
         
         firstSetup()
         
+        def bluetheme():
+            if darkdetect.isDark():
+                apply_stylesheet(app, theme='dark_blue.xml')
+            else:
+                apply_stylesheet(app, theme='light_blue.xml')
+        def cyantheme():
+            if darkdetect.isDark():
+                apply_stylesheet(app, theme='dark_cyan.xml')
+            else:
+                apply_stylesheet(app, theme='light_cyan.xml')
+        def pinktheme():
+            if darkdetect.isDark():
+                apply_stylesheet(app, theme='dark_pink.xml')
+            else:
+                apply_stylesheet(app, theme='light_pink.xml')
+        def redtheme():
+            if darkdetect.isDark():
+                apply_stylesheet(app, theme='dark_red.xml')
+            else:
+                apply_stylesheet(app, theme='light_red.xml')
+        def yellowtheme():
+            if darkdetect.isDark():
+                apply_stylesheet(app, theme='dark_yellow.xml')
+            else:
+                apply_stylesheet(app, theme='light_yellow.xml')
+
         # Triggers for funcions
         self.pushButton_4.clicked.connect(installButton)
         self.actionAbout.triggered.connect(upgradeall)
@@ -1371,6 +1432,11 @@ I Know the progressbar is not really showing progress... i'll fix it in the futu
         self.actionFix_Chocolatey.triggered.connect(chocofix)
         self.actionInstall_Sudo.triggered.connect(installsudo)
         self.actionDonate.triggered.connect(donation)
+        self.blue.triggered.connect(bluetheme)
+        self.cyan.triggered.connect(cyantheme)
+        self.pink.triggered.connect(pinktheme)
+        self.red.triggered.connect(redtheme)
+        self.yellow.triggered.connect(yellowtheme)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -1460,6 +1526,7 @@ I Know the progressbar is not really showing progress... i'll fix it in the futu
         self.label_2.setText(_translate("MainWindow", "Progress:"))
         self.menuHelp.setTitle(_translate("MainWindow", "Software"))
         self.menuHelp_2.setTitle(_translate("MainWindow", "Help"))
+        self.menuTheme.setTitle(_translate("MainWindow", "Themes"))
         self.actionAbout.setText(_translate("MainWindow", "Update"))
         self.actionAbout.setShortcut(_translate("MainWindow", "Ctrl+U"))
         self.actionAbout_2.setText(_translate("MainWindow", "About"))
@@ -1470,6 +1537,11 @@ I Know the progressbar is not really showing progress... i'll fix it in the futu
         self.actionInstall_Sudo.setShortcut(_translate("MainWindow", "Ctrl+Alt+S"))
         self.actionDonate.setText(_translate("MainWindow", "Donate"))
         self.actionDonate.setShortcut(_translate("MainWindow", "Ctrl+D"))
+        self.blue.setText(_translate("MainWindow", "Blue Theme"))
+        self.cyan.setText(_translate("MainWindow", "Cyan Theme"))
+        self.pink.setText(_translate("MainWindow", "Pink Theme"))
+        self.red.setText(_translate("MainWindow", "Red Theme"))
+        self.yellow.setText(_translate("MainWindow", "Yellow Theme"))
 
 # Launch UI
 
