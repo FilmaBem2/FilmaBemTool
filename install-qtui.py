@@ -17,7 +17,7 @@ import darkdetect
 import configparser
 import requests
 
-# Function to download the basic config file
+# Function to download the basic config file (this function will be deleted after i'm done creating a function to create the file)
 
 def confdl():
     appdt = os.getenv('APPDATA')
@@ -1478,6 +1478,7 @@ I Know the progressbar is not really showing progress... i'll fix it in the futu
         self.red.triggered.connect(redtheme)
         self.yellow.triggered.connect(yellowtheme)
 
+    #  Names and Translations
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Filma Bem Tool"))
