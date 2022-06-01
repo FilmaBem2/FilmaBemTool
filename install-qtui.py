@@ -1,10 +1,14 @@
 #!/usr/bin/env python
+
+from ast import And
 from cgi import test
 from encodings import utf_8
+from genericpath import isdir
 from re import sub
 import doctest
 import os
 from os.path import exists as file_exists
+from struct import pack
 import subprocess
 import sys
 import webbrowser
@@ -17,67 +21,99 @@ import darkdetect
 import configparser
 import requests
 
-# Function to download the basic config file (this function will be deleted after i'm done creating a function to create the file)
-
-def confdl():
-    appdt = os.getenv('APPDATA')
-    configfolder = appdt + '/' + 'filmabem/'
-    themefile = configfolder + '/theme.ini'
-    url = 'https://www.dropbox.com/s/tuh8fqidut5msf3/theme.ini?dl=1'
-
-    if file_exists(themefile):
-        time.sleep(0)
-    else:
-        r = requests.get(url)
-        with open(themefile, 'wb') as f:
-            f.write(r.content)
-
-# Function to detect color from config file and apply the coprresponding color to light and dark theme
-
-def themeclr():
-    confdl()
-    appdt = os.getenv('APPDATA')
-    configfolder = appdt + '/' + 'filmabem/'
-    themefile = configfolder + '/theme.ini'
-    config = configparser.ConfigParser()
-    config.read(themefile)
-    
-    if config['themes']['color'] == 'Blue':
-        if darkdetect.isDark():
-            apply_stylesheet(app, theme='dark_blue.xml')
-        else:
-            apply_stylesheet(app, theme='light_blue.xml')
-    elif config['themes']['color'] == 'Cyan':
-        if darkdetect.isDark():
-            apply_stylesheet(app, theme='dark_cyan.xml')
-        else:
-            apply_stylesheet(app, theme='light_cyan.xml')
-    elif config['themes']['color'] == 'Pink':
-        if darkdetect.isDark():
-            apply_stylesheet(app, theme='dark_pink.xml')
-        else:
-            apply_stylesheet(app, theme='light_pink.xml')
-    elif config['themes']['color'] == 'Red':
-        if darkdetect.isDark():
-            apply_stylesheet(app, theme='dark_red.xml')
-        else:
-            apply_stylesheet(app, theme='light_red.xml')
-    elif config['themes']['color'] == 'Yellow':
-        if darkdetect.isDark():
-            apply_stylesheet(app, theme='dark_yellow.xml')
-        else:
-            apply_stylesheet(app, theme='light_yellow.xml')
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        
+        # Check if chocolatey and sudo are installed
+
+        if file_exists('C:\ProgramData\Chocolatey\choco.exe'):
+            chocolatey = True
+            if file_exists('C:\ProgramData\Chocolatey\bin\Sudo.exe'):
+                sudo = True
+            else:
+                sudo = False
+                sudoErrorMSG = QMessageBox()
+                sudoErrorMSG.setWindowTitle("Sudo Not Installed")
+                sudoErrorMSG.setText("""Sudo is not installed and this tool need it to install your programs. You can install it using this command on and Administrator Powershell 'choco install sudo -y'.
+                """)
+        else:
+            chocolatey = False
+            chocoErrorMSG = QMessageBox()
+            chocoErrorMSG.setWindowTitle("Chocolatey Not Installed")
+            chocoErrorMSG.setText("""It seems like you don't have chocolatey installed. Please Install it. You can install it using this guide from official website.
+            """)
+            webbrowser.open('https://chocolatey.org/install')
+
+# Function to download the basic config file (this function will be deleted after i'm done creating a function to create the file)
+
+        def confdl():
+            appdt = os.getenv('APPDATA')
+            configfolder = appdt + '/' + 'filmabem/'
+            fbexistes = os.path.isdir(configfolder)
+            if fbexistes == True:
+                themefile = configfolder + '/theme.ini'
+                url = 'https://www.dropbox.com/s/tuh8fqidut5msf3/theme.ini?dl=1'
+            else:
+                os.mkdir(configfolder)
+                themefile = configfolder + '/theme.ini'
+                url = 'https://www.dropbox.com/s/tuh8fqidut5msf3/theme.ini?dl=1'
+
+            if file_exists(themefile):
+                time.sleep(0)
+            else:
+                r = requests.get(url)
+                with open(themefile, 'wb') as f:
+                    f.write(r.content)
+
+# Function to detect color from config file and apply the coprresponding color to light and dark theme
+
+        def themeclr():
+            confdl()
+            appdt = os.getenv('APPDATA')
+            configfolder = appdt + '/' + 'filmabem/'
+            themefile = configfolder + '/theme.ini'
+            config = configparser.ConfigParser()
+            config.read(themefile)
+            def themetest():
+                if config['themes']['color'] == 'Blue':
+                    if darkdetect.isDark():
+                        apply_stylesheet(app, theme='dark_blue.xml')
+                    else:
+                        apply_stylesheet(app, theme='light_blue.xml')
+                elif config['themes']['color'] == 'Cyan':
+                    if darkdetect.isDark():
+                        apply_stylesheet(app, theme='dark_cyan.xml')
+                    else:
+                        apply_stylesheet(app, theme='light_cyan.xml')
+                elif config['themes']['color'] == 'Pink':
+                    if darkdetect.isDark():
+                        apply_stylesheet(app, theme='dark_pink.xml')
+                    else:
+                        apply_stylesheet(app, theme='light_pink.xml')
+                elif config['themes']['color'] == 'Red':
+                    if darkdetect.isDark():
+                        apply_stylesheet(app, theme='dark_red.xml')
+                    else:
+                        apply_stylesheet(app, theme='light_red.xml')
+                elif config['themes']['color'] == 'Yellow':
+                    if darkdetect.isDark():
+                        apply_stylesheet(app, theme='dark_yellow.xml')
+                    else:
+                        apply_stylesheet(app, theme='light_yellow.xml')
+            themetest()
+
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1080, 930)
+        MainWindow.setFixedWidth(1080)
+        MainWindow.setFixedHeight(930)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(".\\imgs/icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
        
-        # Run the theming function to theme the app
-        themeclr()
+        if chocolatey == True:
+            themeclr()
+        else:
+            app.exit()
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -509,10 +545,6 @@ class Ui_MainWindow(object):
         self.actionAbout.setObjectName("actionAbout")
         self.actionAbout_2 = QtWidgets.QAction(MainWindow)
         self.actionAbout_2.setObjectName("actionAbout_2")
-        self.actionFix_Chocolatey = QtWidgets.QAction(MainWindow)
-        self.actionFix_Chocolatey.setObjectName("actionFix_Chocolatey")
-        self.actionInstall_Sudo = QtWidgets.QAction(MainWindow)
-        self.actionInstall_Sudo.setObjectName("actionInstall_Sudo")
         self.actionDonate = QtWidgets.QAction(MainWindow)
         self.actionDonate.setObjectName("actionDonate")
         self.blue = QtWidgets.QAction(MainWindow)
@@ -526,8 +558,6 @@ class Ui_MainWindow(object):
         self.yellow = QtWidgets.QAction(MainWindow)
         self.yellow.setObjectName("Yellow")
         self.menuHelp.addAction(self.actionAbout)
-        self.menuHelp.addAction(self.actionFix_Chocolatey)
-        self.menuHelp.addAction(self.actionInstall_Sudo)
         self.menuHelp_2.addAction(self.actionAbout_2)
         self.menuHelp_2.addAction(self.actionDonate)
         self.menubar.addAction(self.menuHelp.menuAction())
@@ -1360,40 +1390,10 @@ class Ui_MainWindow(object):
             workdone()
         
         def installButton():
-            packageinstall()
-
-        # Elevate privileges to install chocolatey and sudo
-        def chocofix():
-            def is_admin():
-                try:
-                    return ctypes.windll.shell32.IsUserAnAdmin()
-                except:
-                    return False
-            if is_admin():
-                install3 = subprocess.Popen("powershell.exe Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))", shell=True, stdout=subprocess.PIPE)
-                install3.wait()
+            if chocolatey == True and sudo == True:
+                packageinstall()
             else:
-                ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
-
-        def installsudo():
-            def is_admin():
-                try:
-                    return ctypes.windll.shell32.IsUserAnAdmin()
-                except:
-                    return False
-            if is_admin():
-                install4 = subprocess.Popen('choco install sudo --confirm', shell=True, stdout=subprocess.PIPE)
-                install4.wait()
-            else:
-                ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
-        
-        # Check if chocolatey is installed and call the install funcition
-        def firstSetup():
-            if file_exists('C:\ProgramData\Chocolatey\choco.exe'):
-                time.sleep(0)
-            else:
-                chocofix()
-                installsudo()
+                app.exit()
         
         def upgradeall():
             subprocess.call('sudo choco upgrade all --confirm')
@@ -1432,8 +1432,6 @@ I Know the progressbar is not really showing progress... i'll fix it in the futu
             """)
             msgboxvar = msg.exec_()
         
-        firstSetup()
-        
         def bluetheme():
             if darkdetect.isDark():
                 apply_stylesheet(app, theme='dark_blue.xml')
@@ -1469,8 +1467,6 @@ I Know the progressbar is not really showing progress... i'll fix it in the futu
         self.pushButton_9.clicked.connect(pshell)
         self.actionAbout.triggered.connect(upgradeall)
         self.actionAbout_2.triggered.connect(help)
-        self.actionFix_Chocolatey.triggered.connect(chocofix)
-        self.actionInstall_Sudo.triggered.connect(installsudo)
         self.actionDonate.triggered.connect(donation)
         self.blue.triggered.connect(bluetheme)
         self.cyan.triggered.connect(cyantheme)
@@ -1577,10 +1573,6 @@ I Know the progressbar is not really showing progress... i'll fix it in the futu
         self.actionAbout.setShortcut(_translate("MainWindow", "Ctrl+U"))
         self.actionAbout_2.setText(_translate("MainWindow", "About"))
         self.actionAbout_2.setShortcut(_translate("MainWindow", "F1"))
-        self.actionFix_Chocolatey.setText(_translate("MainWindow", "Fix Chocolatey"))
-        self.actionFix_Chocolatey.setShortcut(_translate("MainWindow", "Ctrl+Alt+C"))
-        self.actionInstall_Sudo.setText(_translate("MainWindow", "Install Sudo"))
-        self.actionInstall_Sudo.setShortcut(_translate("MainWindow", "Ctrl+Alt+S"))
         self.actionDonate.setText(_translate("MainWindow", "Donate"))
         self.actionDonate.setShortcut(_translate("MainWindow", "Ctrl+D"))
         self.blue.setText(_translate("MainWindow", "Blue Theme"))
