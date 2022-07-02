@@ -17,13 +17,7 @@ This tool was made to install software after a fresh windows install. It uses Ch
 
 # First Run
 ## Depends
-if it’s the first run or chocolatey is not installed this tool will relaunch as root to install it and then install sudo to elevate privileges to install programs. I recommend you to close the tool and re-open it after chocolatey is installed. To avoid some issues this tool will only run as admin if it needs to install chocolatey. All other software instalations will use sudo to elevate privileges.
-
-## Configurations
-If it's the first run this tool will download the default configuration file (i clould make it create one, but downloading it is easier) and will start with the default configurations
-
-# Configure the tool
-You can configure this tool by editing the config file located on your appdata folder. It will download the config file to a subfolder called filmabem.
+This tool Depends on Chocolatey and Sudo. if you don't have them installed this tool will not work. It will tell you that every time you run the tool. If you don't know how to install this things don't worry. The tool will launch the interface anyways so you can go to the top menu, select software and the select this things and a new tab on your browser will open with the instructions
 
 ## Themes
 You can choose the theme accent color from this 5 colors:
@@ -33,13 +27,18 @@ You can choose the theme accent color from this 5 colors:
 - Red
 - Yellow
 
+If you don't choose any color it will default to Blue.
+
+To choose the color you want the theme you want the tool to launch open your command line in this the executable folder and launch the tool with the argument "-c" or "--color" followed by the color you want. Example "fbtool.exe -c red" or "fbtool.exe --color red". Always remeber to spell in lowercase
+
 The Tool will use the light or dark variant depending on yout windows theme.
 
 ## Force Light Mode
-THIS OPTION IS NOT IMPLEMENTED YET but if this option is set to 'True' this tool will use only light mode.
+THIS OPTION IS NOT IMPLEMENTED YET but i'm working on that i'm working on that feature
 
-## Advanced Mode
-THIS OPTION IS NOT IMPLEMENTED YET and it's not planned to be implemented soon. It will take a lot of time to implement if i don't just remove this option
+## Force Light Mode
+THIS OPTION IS NOT IMPLEMENTED YET but i'm working on that i'm working on that feature
+
 
 # Top Menu
 In the top menu you have the ‘Software’ tab with 2 options to troubleshoot and an option to upgrade all software installed by this tool or directlly by chocolatey. In the same menu you have the ‘Help’ tab with 2 options. One of them is some information about the tool and the other option is to donate to my paypal.

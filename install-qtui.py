@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 from ast import And
 from cgi import test
 from encodings import utf_8
@@ -8,113 +7,75 @@ from re import sub
 import doctest
 import os
 from os.path import exists as file_exists
-from struct import pack
 import subprocess
 import sys
 import webbrowser
 import time
-import ctypes
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 from qt_material import apply_stylesheet, list_themes
 import darkdetect
-import configparser
-import requests
+import argparse
 
+parser = argparse.ArgumentParser(description='FB Tool')
+parser.add_argument('-c', '--color', type=str, help='Select the accent color of the app')
+parser.add_argument('-m', '--mode', type=str, help='Force Dark or Light mode. Just spell "dark" or "right"')
+
+args = parser.parse_args()
+
+color = args.color
+mode = args.mode
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
-        
-        # Check if chocolatey and sudo are installed
 
-        if file_exists('C:\ProgramData\Chocolatey\choco.exe'):
-            chocolatey = True
-            if file_exists('C:\ProgramData\Chocolatey\bin\Sudo.exe'):
-                sudo = True
-            else:
-                sudo = False
-                sudoErrorMSG = QMessageBox()
-                sudoErrorMSG.setWindowTitle("Sudo Not Installed")
-                sudoErrorMSG.setText("""Sudo is not installed and this tool need it to install your programs. You can install it using this command on and Administrator Powershell 'choco install sudo -y'.
-                """)
-        else:
-            chocolatey = False
-            chocoErrorMSG = QMessageBox()
-            chocoErrorMSG.setWindowTitle("Chocolatey Not Installed")
-            chocoErrorMSG.setText("""It seems like you don't have chocolatey installed. Please Install it. You can install it using this guide from official website.
-            """)
-            webbrowser.open('https://chocolatey.org/install')
-
-# Function to download the basic config file (this function will be deleted after i'm done creating a function to create the file)
-
-        def confdl():
-            appdt = os.getenv('APPDATA')
-            configfolder = appdt + '/' + 'filmabem/'
-            fbexistes = os.path.isdir(configfolder)
-            if fbexistes == True:
-                themefile = configfolder + '/theme.ini'
-                url = 'https://www.dropbox.com/s/tuh8fqidut5msf3/theme.ini?dl=1'
-            else:
-                os.mkdir(configfolder)
-                themefile = configfolder + '/theme.ini'
-                url = 'https://www.dropbox.com/s/tuh8fqidut5msf3/theme.ini?dl=1'
-
-            if file_exists(themefile):
-                time.sleep(0)
-            else:
-                r = requests.get(url)
-                with open(themefile, 'wb') as f:
-                    f.write(r.content)
 
 # Function to detect color from config file and apply the coprresponding color to light and dark theme
-
-        def themeclr():
-            confdl()
-            appdt = os.getenv('APPDATA')
-            configfolder = appdt + '/' + 'filmabem/'
-            themefile = configfolder + '/theme.ini'
-            config = configparser.ConfigParser()
-            config.read(themefile)
-            def themetest():
-                if config['themes']['color'] == 'Blue':
-                    if darkdetect.isDark():
-                        apply_stylesheet(app, theme='dark_blue.xml')
-                    else:
-                        apply_stylesheet(app, theme='light_blue.xml')
-                elif config['themes']['color'] == 'Cyan':
-                    if darkdetect.isDark():
-                        apply_stylesheet(app, theme='dark_cyan.xml')
-                    else:
-                        apply_stylesheet(app, theme='light_cyan.xml')
-                elif config['themes']['color'] == 'Pink':
-                    if darkdetect.isDark():
-                        apply_stylesheet(app, theme='dark_pink.xml')
-                    else:
-                        apply_stylesheet(app, theme='light_pink.xml')
-                elif config['themes']['color'] == 'Red':
-                    if darkdetect.isDark():
-                        apply_stylesheet(app, theme='dark_red.xml')
-                    else:
-                        apply_stylesheet(app, theme='light_red.xml')
-                elif config['themes']['color'] == 'Yellow':
-                    if darkdetect.isDark():
-                        apply_stylesheet(app, theme='dark_yellow.xml')
-                    else:
-                        apply_stylesheet(app, theme='light_yellow.xml')
-            themetest()
-
+        def colors():
+            if color == 'blue':
+                if darkdetect.isDark():
+                    apply_stylesheet(app, theme='dark_blue.xml')
+                else:
+                    apply_stylesheet(app, theme='light_blue.xml')
+            elif color == 'cyan':
+                if darkdetect.isDark():
+                    apply_stylesheet(app, theme='dark_cyan.xml')
+                else:
+                    apply_stylesheet(app, theme='light_cyan.xml')
+            elif color == 'pink':
+                if darkdetect.isDark():
+                    apply_stylesheet(app, theme='dark_pink.xml')
+                else:
+                    apply_stylesheet(app, theme='light_pink.xml')
+            elif color == 'red':
+                if darkdetect.isDark():
+                    apply_stylesheet(app, theme='dark_red.xml')
+                else:
+                    apply_stylesheet(app, theme='light_red.xml')
+            elif color == 'yellow':
+                if darkdetect.isDark():
+                     apply_stylesheet(app, theme='dark_yellow.xml')
+                else:
+                    apply_stylesheet(app, theme='light_yellow.xml')
+            else:
+                if darkdetect.isDark():
+                    apply_stylesheet(app, theme='dark_blue.xml')
+                else:
+                    apply_stylesheet(app, theme='light_blue.xml')
+            
+        colors()                
+        chocoErrorMSG = QMessageBox()
+        chocoErrorMSG.setWindowTitle("Chocolatey And Sudo Required to Install Software")
+        chocoErrorMSG.setText("""This tools need you to have chocolatey and sudo installed, unless it will not work even if it shows you the graphical interface.
+If you need links to install chocolatey and sudo you can use the top menu of the interface to go to the chocolatey website.
+        """)
+        chocomsg = chocoErrorMSG.exec_()
         MainWindow.setObjectName("MainWindow")
         MainWindow.setFixedWidth(1080)
         MainWindow.setFixedHeight(930)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(".\\imgs/icon.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
-       
-        if chocolatey == True:
-            themeclr()
-        else:
-            app.exit()
-
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -547,6 +508,10 @@ class Ui_MainWindow(object):
         self.actionAbout_2.setObjectName("actionAbout_2")
         self.actionDonate = QtWidgets.QAction(MainWindow)
         self.actionDonate.setObjectName("actionDonate")
+        self.actionchoco = QtWidgets.QAction(MainWindow)
+        self.actionchoco.setObjectName("actionchoco")
+        self.actionsudo = QtWidgets.QAction(MainWindow)
+        self.actionsudo.setObjectName("actionsudo")
         self.blue = QtWidgets.QAction(MainWindow)
         self.blue.setObjectName("Blue")
         self.cyan = QtWidgets.QAction(MainWindow)
@@ -560,6 +525,8 @@ class Ui_MainWindow(object):
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp_2.addAction(self.actionAbout_2)
         self.menuHelp_2.addAction(self.actionDonate)
+        self.menuHelp.addAction(self.actionchoco)
+        self.menuHelp.addAction(self.actionsudo)
         self.menubar.addAction(self.menuHelp.menuAction())
         self.menubar.addAction(self.menuTheme.menuAction())
         self.menubar.addAction(self.menuHelp_2.menuAction())
@@ -1390,10 +1357,8 @@ class Ui_MainWindow(object):
             workdone()
         
         def installButton():
-            if chocolatey == True and sudo == True:
-                packageinstall()
-            else:
-                app.exit()
+            packageinstall()
+            
         
         def upgradeall():
             subprocess.call('sudo choco upgrade all --confirm')
@@ -1457,6 +1422,12 @@ I Know the progressbar is not really showing progress... i'll fix it in the futu
                 apply_stylesheet(app, theme='dark_yellow.xml')
             else:
                 apply_stylesheet(app, theme='light_yellow.xml')
+        
+        def chocoinst():
+            webbrowser.open_new_tab('https://chocolatey.org/install')
+        
+        def sudo():
+            webbrowser.open_new_tab('https://community.chocolatey.org/packages/Sudo')
 
         # Triggers for funcions
         self.pushButton_4.clicked.connect(installButton)
@@ -1473,6 +1444,8 @@ I Know the progressbar is not really showing progress... i'll fix it in the futu
         self.pink.triggered.connect(pinktheme)
         self.red.triggered.connect(redtheme)
         self.yellow.triggered.connect(yellowtheme)
+        self.actionchoco.triggered.connect(chocoinst)
+        self.actionsudo.triggered.connect(sudo)
 
     #  Names and Translations
     def retranslateUi(self, MainWindow):
@@ -1570,6 +1543,8 @@ I Know the progressbar is not really showing progress... i'll fix it in the futu
         self.menuHelp_2.setTitle(_translate("MainWindow", "Help"))
         self.menuTheme.setTitle(_translate("MainWindow", "Themes"))
         self.actionAbout.setText(_translate("MainWindow", "Update"))
+        self.actionchoco.setText(_translate("MainWindow", "Install Chocolatey"))
+        self.actionsudo.setText(_translate("MainWindow", "Install Sudo"))
         self.actionAbout.setShortcut(_translate("MainWindow", "Ctrl+U"))
         self.actionAbout_2.setText(_translate("MainWindow", "About"))
         self.actionAbout_2.setShortcut(_translate("MainWindow", "F1"))
